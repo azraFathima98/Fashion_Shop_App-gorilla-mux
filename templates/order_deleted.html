@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Deleted Successfully</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .success-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #28a745;
+        }
+
+        h2 {
+            color: #28a745;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .deleted-order-info {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: left;
+            border-left: 4px solid #dc3545;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .info-value {
+            color: #212529;
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+<div class="success-container">
+    <div class="success-icon">🗑️</div>
+    <h2>Order Deleted Successfully!</h2>
+
+    <div class="deleted-order-info">
+        <h4 style="margin-bottom: 15px; color: #dc3545;">Deleted Order Information:</h4>
+        <div class="info-row">
+            <span class="info-label">🆔 Order ID:</span>
+            <span class="info-value">{{.OrderID}}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">📱 Customer:</span>
+            <span class="info-value">{{.CustomerID}}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">👕 Size:</span>
+            <span class="info-value">{{.Size}}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">📦 Quantity:</span>
+            <span class="info-value">{{.Quantity}}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">💰 Amount:</span>
+            <span class="info-value">LKR {{printf "%.2f" .TotalAmount}}</span>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <a href="/delete-order" class="btn btn-primary">Delete Another Order</a>
+        <a href="/reports" class="btn btn-secondary">View Remaining Orders</a>
+        <a href="/" class="btn btn-secondary">Back to Home</a>
+    </div>
+</div>
+</body>
+</html>

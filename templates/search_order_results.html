@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .order-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .order-details {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 1rem;
+        }
+
+        .detail-value {
+            color: #212529;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .status {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status.processing {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status.delivering {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status.delivered {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .total-amount {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 480px) {
+            .order-container {
+                padding: 30px 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="order-container">
+    <h2>📋 Order Details</h2>
+
+    <div class="order-details">
+        <div class="detail-row">
+            <span class="detail-label">🆔 Order ID:</span>
+            <span class="detail-value">{{.OrderID}}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">📱 Contact:</span>
+            <span class="detail-value">{{.CustomerID}}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">👕 Size:</span>
+            <span class="detail-value">{{.Size}}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">📦 Quantity:</span>
+            <span class="detail-value">{{.Quantity}}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">📋 Status:</span>
+            <span class="status {{if eq .Status "PROCESSING"}}processing{{else if eq .Status "DELIVERING"}}delivering{{else}}delivered{{end}}">
+            {{.Status}}
+            </span>
+        </div>
+    </div>
+
+    <div class="total-amount">
+        💰 Total Amount: LKR {{printf "%.2f" .TotalAmount}}
+    </div>
+
+    <div class="action-buttons">
+        <a href="/search-order" class="btn btn-primary">Search Another Order</a>
+        <a href="/reports" class="btn btn-secondary">View All Orders</a>
+        <a href="/" class="btn btn-secondary">Back to Home</a>
+    </div>
+</div>
+</body>
+</html>
