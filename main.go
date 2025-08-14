@@ -31,8 +31,7 @@ var priceMap = map[string]float64{
 }
 var statuses = []string{"PROCESSING", "DELIVERING", "DELIVERED"}
 
-// generateOrderID - simple generator using DB's last insert id is tricky, so we make a timestamp-like code.
-// For production, consider UUID or a safer sequence in DB.
+
 func generateOrderID(nextSeq int) string {
 	return fmt.Sprintf("ODR#%05d", nextSeq)
 }
@@ -46,7 +45,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	_ = t.Execute(w, nil)
 }
 
-// placeOrder: GET -> form, POST -> insert order into DB
+
 func placeOrderPage(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		t := mustParseTemplates("form.html")
@@ -69,13 +68,13 @@ func placeOrderPage(w http.ResponseWriter, r *http.Request) {
 		}
 		amount := price * float64(qty)
 
-		// Use a DB transaction to get a sequence-like number for OrderID
+		
 		tx, err := db.Begin()
 		if err != nil {
 			http.Error(w, "DB error", http.StatusInternalServerError)
 			return
 		}
-		// Insert a placeholder row to get auto-increment id
+		
 		res, err := tx.Exec("INSERT INTO orders (order_id, customer_id, size, quantity, total_amount, status) VALUES (?, ?, ?, ?, ?, ?)",
 			"", contact, size, qty, amount, statuses[0])
 		if err != nil {
@@ -103,7 +102,7 @@ func placeOrderPage(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Build order object to pass to template
+	
 		order := Order{
 			ID:          int(lastID),
 			OrderID:     orderCode,
@@ -119,7 +118,7 @@ func placeOrderPage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// search customer
+
 func searchCustomerPage(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		t := mustParseTemplates("search_customer_form.html")
@@ -145,7 +144,7 @@ func searchCustomerPage(w http.ResponseWriter, r *http.Request) {
 	_ = t.Execute(w, found)
 }
 
-// search order
+
 func searchOrderPage(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		t := mustParseTemplates("search_order_form.html")
@@ -173,7 +172,7 @@ func searchOrderPage(w http.ResponseWriter, r *http.Request) {
 	_ = t.Execute(w, o)
 }
 
-// reports
+
 type ReportData struct {
 	Orders      []Order
 	TotalOrders int
@@ -206,7 +205,7 @@ func viewReports(w http.ResponseWriter, r *http.Request) {
 	_ = t.Execute(w, data)
 }
 
-// change status
+
 func changeStatusPage(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		rows, err := db.Query("SELECT id, order_id, customer_id, size, quantity, total_amount, status, created_at FROM orders ORDER BY created_at DESC")
@@ -227,9 +226,9 @@ func changeStatusPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	idStr := r.FormValue("orderid")
-	// Allow either order_id or numeric id — here we expect order id string
+	
 	orderID := idStr
-	// find current status
+	
 	row := db.QueryRow("SELECT status FROM orders WHERE order_id = ?", orderID)
 	var currentStatus string
 	err := row.Scan(&currentStatus)
@@ -267,7 +266,7 @@ func changeStatusPage(w http.ResponseWriter, r *http.Request) {
 	_ = t.Execute(w, o)
 }
 
-// delete
+
 func deleteOrderPage(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		rows, err := db.Query("SELECT id, order_id, customer_id, size, quantity, total_amount, status, created_at FROM orders ORDER BY created_at DESC")
@@ -305,7 +304,7 @@ func deleteOrderPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	// Open DB connection (replace user:pass with yours)
+	
 	var err error
 	dsn := "root:1234@tcp(127.0.0.1:3306)/orderdb?parseTime=true"
 	db, err = sql.Open("mysql", dsn)
